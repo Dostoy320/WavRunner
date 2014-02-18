@@ -13,8 +13,14 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javax.swing.JOptionPane;
+//import javax.swing.JOptionPane;
 import javafx.util.*;
+//import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -48,13 +54,20 @@ public class NewJFrame extends javax.swing.JFrame {
         browseWavButton = new javax.swing.JButton();
         selectWavLabel = new javax.swing.JLabel();
         fileWavLabel = new javax.swing.JLabel();
-        playButton = new javax.swing.JButton();
-        seekButton = new javax.swing.JButton();
         selectTimedLabel = new javax.swing.JLabel();
         browseTimedButton = new javax.swing.JButton();
         fileTimedLabel = new javax.swing.JLabel();
+        startTimeLabel = new javax.swing.JLabel();
+        startTimeField = new javax.swing.JFormattedTextField();
+        startTimeButton = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        prevButton = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(600, 300));
 
         browseWavButton.setText("Browse");
         browseWavButton.addActionListener(new java.awt.event.ActionListener() {
@@ -67,20 +80,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
         fileWavLabel.setText("...");
 
-        playButton.setText("Play wav");
-        playButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playButtonActionPerformed(evt);
-            }
-        });
-
-        seekButton.setText("seek");
-        seekButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                seekButtonActionPerformed(evt);
-            }
-        });
-
         selectTimedLabel.setText("Select timed text:");
 
         browseTimedButton.setText("Browse");
@@ -91,6 +90,66 @@ public class NewJFrame extends javax.swing.JFrame {
         });
 
         fileTimedLabel.setText("...");
+
+        startTimeLabel.setText("Start Time:");
+
+        startTimeField.setColumns(6);
+        startTimeField.setText("00:58:30");
+
+        startTimeButton.setText("Load Start Times");
+        startTimeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startTimeButtonActionPerformed(evt);
+            }
+        });
+
+        prevButton.setText("Previous");
+        prevButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prevButtonActionPerformed(evt);
+            }
+        });
+
+        nextButton.setText("Next");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Stop");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(prevButton)
+                .addGap(26, 26, 26)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(nextButton)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(prevButton)
+                    .addComponent(nextButton)
+                    .addComponent(jButton1))
+                .addContainerGap(56, Short.MAX_VALUE))
+        );
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Description Seeker");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -105,44 +164,63 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addComponent(browseWavButton)
                         .addGap(18, 18, 18)
                         .addComponent(fileWavLabel))
-                    .addComponent(playButton)
-                    .addComponent(seekButton)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(selectTimedLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(browseTimedButton)
                         .addGap(18, 18, 18)
-                        .addComponent(fileTimedLabel)))
-                .addContainerGap(198, Short.MAX_VALUE))
+                        .addComponent(fileTimedLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(startTimeLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(startTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(startTimeButton)))
+                .addContainerGap(234, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(24, 24, 24))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(23, 23, 23)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(browseWavButton)
                     .addComponent(selectWavLabel)
                     .addComponent(fileWavLabel))
                 .addGap(18, 18, 18)
-                .addComponent(playButton)
-                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selectTimedLabel)
                     .addComponent(browseTimedButton)
                     .addComponent(fileTimedLabel))
                 .addGap(18, 18, 18)
-                .addComponent(seekButton)
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(startTimeLabel)
+                    .addComponent(startTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(startTimeButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
     public void hideButton() {
-        playButton.setVisible(false);
+        startTimeButton.setVisible(false);
     }
     
+    // wavPath available to browse and play buttons
     String wavPath;
+    Media hit;
+    MediaPlayer mediaPlayer;
     private void browseWavButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseWavButtonActionPerformed
         //Create a file chooser
         final JFileChooser fc = new JFileChooser();
@@ -155,35 +233,14 @@ public class NewJFrame extends javax.swing.JFrame {
         wavPath = path.toString();
         String fileName = fc.getName(wavFile);
         fileWavLabel.setText(fileName);
-        playButton.setVisible(true);
-    }//GEN-LAST:event_browseWavButtonActionPerformed
-        
-    Media hit;
-    MediaPlayer mediaPlayer;
-    private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
-        //Play selected file
+        //Initialize MediaPlayer instance
         JFXPanel forToolkit = new JFXPanel();
         hit = new Media(wavPath);
-       // durationLabel.setText(hit.getDuration().toString());
         mediaPlayer = new MediaPlayer(hit);
-        //JOptionPane.showMessageDialog(this, mediaPlayer.getCurrentTime());
-        mediaPlayer.play();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Duration stopTime = mediaPlayer.getStopTime();
-        JOptionPane.showMessageDialog(this, stopTime);
-        
-    }//GEN-LAST:event_playButtonActionPerformed
-
-    private void seekButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seekButtonActionPerformed
-        Duration seekVal = Duration.hours(.1999);
-        mediaPlayer.seek(seekVal);
-        mediaPlayer.play();
-    }//GEN-LAST:event_seekButtonActionPerformed
+    }//GEN-LAST:event_browseWavButtonActionPerformed
+    
     String textPath;
+    BufferedReader bufRead;
     private void browseTimedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseTimedButtonActionPerformed
         //Create a file chooser
         final JFileChooser fc = new JFileChooser();
@@ -192,26 +249,82 @@ public class NewJFrame extends javax.swing.JFrame {
         fc.setFileFilter(filter);
         int returnVal = fc.showOpenDialog(null);
         File textFile = fc.getSelectedFile();
-        // FileReader?????
         try {
             FileReader timedText = new FileReader(textFile);
-            BufferedReader bufRead = new BufferedReader(timedText);
-            String myLine = null;
-            List<String> inTimes = null;
-            //while ( (myLine = bufRead.readLine()) != null) {
-            //    inTimes.add(myLine);
-            //}
-            JOptionPane.showMessageDialog(this, bufRead.readLine());
+            bufRead = new BufferedReader(timedText);
+            //Get filename and display in GUI
+            URI path = textFile.toURI();
+            textPath = path.toString();
+            String fileName = fc.getName(textFile);
+            fileTimedLabel.setText(fileName);
+            //reveal button to calculate start times
+            startTimeButton.setVisible(true);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        }
+    }//GEN-LAST:event_browseTimedButtonActionPerformed
+    
+    Date startTime;
+    List<Double> inTimes = new ArrayList<>();
+    int arrayPosition = 0;
+    private void startTimeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTimeButtonActionPerformed
+        //Parsing timecode strings to dates and calculating milliseconds
+        //http://stackoverflow.com/questions/8826270/how-to-convert-hhmmss-sss-to-milliseconds
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+            //Retrieve startTimeField value and convert to milliseconds:
+            //JOptionPane.showMessageDialog(this, startTimeField.getText());
+            startTime = sdf.parse("1970-01-01 " + startTimeField.getText());
+        } catch (ParseException ex) {
             Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        URI path = textFile.toURI();
-        textPath = path.toString();
-        String fileName = fc.getName(textFile);
-        fileTimedLabel.setText(fileName);
-    }//GEN-LAST:event_browseTimedButtonActionPerformed
+        String myLine = null;
+        
+        try {
+            while ((myLine = bufRead.readLine()) != null) {
+                if (myLine.isEmpty()) {
+                    continue;
+                } else {
+                    String time = myLine.substring(1, 9);
+                    Date myTime = sdf.parse("1970-01-01 " + time);
+                    double resolvedTime = myTime.getTime() - startTime.getTime();
+                    inTimes.add(resolvedTime);
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        startTimeButton.setText("Loaded Successfully");
+    }//GEN-LAST:event_startTimeButtonActionPerformed
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        
+        //Play next time in List inTimes
+        arrayPosition = arrayPosition + 1;
+        Duration seekVal = Duration.millis(inTimes.get(arrayPosition));
+        //JOptionPane.showMessageDialog(null, inTimes.get(2));
+        mediaPlayer.seek(seekVal);
+        mediaPlayer.play();
+    }//GEN-LAST:event_nextButtonActionPerformed
+
+    private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
+        //Play previous in time;
+        if (arrayPosition > 0) {
+            arrayPosition = arrayPosition - 1;
+        }
+        Duration seekVal = Duration.millis(inTimes.get(arrayPosition));
+        mediaPlayer.seek(seekVal);
+        mediaPlayer.play();
+        
+    }//GEN-LAST:event_prevButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //Stop playback
+        mediaPlayer.stop();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -254,9 +367,15 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton browseWavButton;
     private javax.swing.JLabel fileTimedLabel;
     private javax.swing.JLabel fileWavLabel;
-    private javax.swing.JButton playButton;
-    private javax.swing.JButton seekButton;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JButton prevButton;
     private javax.swing.JLabel selectTimedLabel;
     private javax.swing.JLabel selectWavLabel;
+    private javax.swing.JButton startTimeButton;
+    private javax.swing.JFormattedTextField startTimeField;
+    private javax.swing.JLabel startTimeLabel;
     // End of variables declaration//GEN-END:variables
 }
