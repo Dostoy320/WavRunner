@@ -67,6 +67,10 @@ public class NewJFrame extends javax.swing.JFrame {
         fwd20Button = new javax.swing.JButton();
         prevButton = new javax.swing.JButton();
         back20Button = new javax.swing.JButton();
+        descriptionLabel = new javax.swing.JLabel();
+        someDescLabel = new javax.swing.JLabel();
+        slashLabel = new javax.swing.JLabel();
+        totalDescLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(600, 350));
@@ -148,6 +152,14 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        descriptionLabel.setText("Current Description:");
+
+        someDescLabel.setText("...");
+
+        slashLabel.setText("/");
+
+        totalDescLabel.setText("...");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -189,7 +201,16 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)
-                        .addGap(24, 24, 24))))
+                        .addGap(24, 24, 24))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(descriptionLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(someDescLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(slashLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(totalDescLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,7 +232,13 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(startTimeLabel)
                     .addComponent(startTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(startTimeButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(descriptionLabel)
+                    .addComponent(someDescLabel)
+                    .addComponent(slashLabel)
+                    .addComponent(totalDescLabel))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pauseButton)
                     .addComponent(back20Button)
@@ -309,6 +336,9 @@ public class NewJFrame extends javax.swing.JFrame {
             Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         startTimeButton.setText("Loaded Successfully");
+        String totalDesc = Integer.toString(inTimes.size());
+        totalDescLabel.setText(totalDesc);
+        someDescLabel.setText(Integer.toString(arrayPosition + 1));
     }//GEN-LAST:event_startTimeButtonActionPerformed
 
     private void startTimeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTimeFieldActionPerformed
@@ -325,6 +355,7 @@ public class NewJFrame extends javax.swing.JFrame {
         Duration seekVal = Duration.millis(inTimes.get(arrayPosition));
         mediaPlayer.seek(seekVal);
         mediaPlayer.play();
+        someDescLabel.setText(Integer.toString(arrayPosition + 1));
     }//GEN-LAST:event_fwd20ButtonActionPerformed
 
     private void back20ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back20ButtonActionPerformed
@@ -337,6 +368,7 @@ public class NewJFrame extends javax.swing.JFrame {
         Duration seekVal = Duration.millis(inTimes.get(arrayPosition));
         mediaPlayer.seek(seekVal);
         mediaPlayer.play();
+        someDescLabel.setText(Integer.toString(arrayPosition + 1));
     }//GEN-LAST:event_back20ButtonActionPerformed
 
     private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
@@ -353,6 +385,9 @@ public class NewJFrame extends javax.swing.JFrame {
         if (mediaPlayer.getStatus() == Status.HALTED) {
             mediaPlayer.play();
         }
+        if (mediaPlayer.getStatus() == Status.READY) {
+            mediaPlayer.play();
+        }
     }//GEN-LAST:event_pauseButtonActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
@@ -363,6 +398,7 @@ public class NewJFrame extends javax.swing.JFrame {
         //JOptionPane.showMessageDialog(null, inTimes.get(2));
         mediaPlayer.seek(seekVal);
         mediaPlayer.play();
+        someDescLabel.setText(Integer.toString(arrayPosition + 1));
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
@@ -373,6 +409,7 @@ public class NewJFrame extends javax.swing.JFrame {
         Duration seekVal = Duration.millis(inTimes.get(arrayPosition));
         mediaPlayer.seek(seekVal);
         mediaPlayer.play();
+        someDescLabel.setText(Integer.toString(arrayPosition + 1));
 
     }//GEN-LAST:event_prevButtonActionPerformed
 
@@ -416,6 +453,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton back20Button;
     private javax.swing.JButton browseTimedButton;
     private javax.swing.JButton browseWavButton;
+    private javax.swing.JLabel descriptionLabel;
     private javax.swing.JLabel fileTimedLabel;
     private javax.swing.JLabel fileWavLabel;
     private javax.swing.JButton fwd20Button;
@@ -425,8 +463,11 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton prevButton;
     private javax.swing.JLabel selectTimedLabel;
     private javax.swing.JLabel selectWavLabel;
+    private javax.swing.JLabel slashLabel;
+    private javax.swing.JLabel someDescLabel;
     private javax.swing.JButton startTimeButton;
     private javax.swing.JFormattedTextField startTimeField;
     private javax.swing.JLabel startTimeLabel;
+    private javax.swing.JLabel totalDescLabel;
     // End of variables declaration//GEN-END:variables
 }
