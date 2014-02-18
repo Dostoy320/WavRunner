@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 //import javax.swing.JOptionPane;
 import javafx.util.*;
 //import java.text.DateFormat;
@@ -30,7 +31,7 @@ import java.util.TimeZone;
 
 /**
  *
- * @author Adam
+ * @author Adam Gregory
  */
 public class NewJFrame extends javax.swing.JFrame {
 
@@ -60,14 +61,15 @@ public class NewJFrame extends javax.swing.JFrame {
         startTimeLabel = new javax.swing.JLabel();
         startTimeField = new javax.swing.JFormattedTextField();
         startTimeButton = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        prevButton = new javax.swing.JButton();
-        nextButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        pauseButton = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
+        fwd20Button = new javax.swing.JButton();
+        prevButton = new javax.swing.JButton();
+        back20Button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(600, 300));
+        setPreferredSize(new java.awt.Dimension(600, 350));
 
         browseWavButton.setText("Browse");
         browseWavButton.addActionListener(new java.awt.event.ActionListener() {
@@ -91,10 +93,15 @@ public class NewJFrame extends javax.swing.JFrame {
 
         fileTimedLabel.setText("...");
 
-        startTimeLabel.setText("Start Time:");
+        startTimeLabel.setText("Start Time from VLin:");
 
         startTimeField.setColumns(6);
         startTimeField.setText("00:58:30");
+        startTimeField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startTimeFieldActionPerformed(evt);
+            }
+        });
 
         startTimeButton.setText("Load Start Times");
         startTimeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -103,10 +110,13 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        prevButton.setText("Previous");
-        prevButton.addActionListener(new java.awt.event.ActionListener() {
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Description Seeker");
+
+        pauseButton.setText("Play / Pause");
+        pauseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                prevButtonActionPerformed(evt);
+                pauseButtonActionPerformed(evt);
             }
         });
 
@@ -117,39 +127,26 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Stop");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        fwd20Button.setText("Fwd 20");
+        fwd20Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                fwd20ButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(prevButton)
-                .addGap(26, 26, 26)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(nextButton)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(prevButton)
-                    .addComponent(nextButton)
-                    .addComponent(jButton1))
-                .addContainerGap(56, Short.MAX_VALUE))
-        );
+        prevButton.setText("Previous");
+        prevButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prevButtonActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Description Seeker");
+        back20Button.setText("Back 20");
+        back20Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                back20ButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -159,31 +156,40 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(selectWavLabel)
-                        .addGap(21, 21, 21)
-                        .addComponent(browseWavButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(fileWavLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(selectTimedLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(browseTimedButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(fileTimedLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(startTimeLabel)
-                        .addGap(18, 18, 18)
-                        .addComponent(startTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(startTimeButton)))
-                .addContainerGap(234, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(24, 24, 24))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(selectWavLabel)
+                                .addGap(21, 21, 21)
+                                .addComponent(browseWavButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(fileWavLabel))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(selectTimedLabel)
+                                    .addComponent(startTimeLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(browseTimedButton)
+                                    .addComponent(startTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(startTimeButton)
+                                    .addComponent(fileTimedLabel)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(back20Button)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(prevButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(pauseButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(nextButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(fwd20Button)))
+                        .addContainerGap(87, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(24, 24, 24))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,9 +211,14 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(startTimeLabel)
                     .addComponent(startTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(startTimeButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pauseButton)
+                    .addComponent(back20Button)
+                    .addComponent(prevButton)
+                    .addComponent(fwd20Button)
+                    .addComponent(nextButton))
+                .addGap(42, 42, 42))
         );
 
         pack();
@@ -300,8 +311,52 @@ public class NewJFrame extends javax.swing.JFrame {
         startTimeButton.setText("Loaded Successfully");
     }//GEN-LAST:event_startTimeButtonActionPerformed
 
+    private void startTimeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTimeFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_startTimeFieldActionPerformed
+
+    private void fwd20ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fwd20ButtonActionPerformed
+        //Go ahead 20 descriptions or to last if less than 20 to end
+        if (arrayPosition > inTimes.size() - 20) {
+            arrayPosition = inTimes.size();
+        } else {
+            arrayPosition = arrayPosition + 20;
+        }
+        Duration seekVal = Duration.millis(inTimes.get(arrayPosition));
+        mediaPlayer.seek(seekVal);
+        mediaPlayer.play();
+    }//GEN-LAST:event_fwd20ButtonActionPerformed
+
+    private void back20ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back20ButtonActionPerformed
+        //Go back 20 descriptions or to first description if less than 20 to beginning
+        if (arrayPosition < 20) {
+            arrayPosition = arrayPosition - arrayPosition;
+        } else {
+            arrayPosition = arrayPosition - 20;
+        }
+        Duration seekVal = Duration.millis(inTimes.get(arrayPosition));
+        mediaPlayer.seek(seekVal);
+        mediaPlayer.play();
+    }//GEN-LAST:event_back20ButtonActionPerformed
+
+    private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
+        //Play / Pause playback
+        if (mediaPlayer.getStatus() == Status.PLAYING) {
+            mediaPlayer.pause();
+        }
+        if (mediaPlayer.getStatus() == Status.PAUSED) {
+            mediaPlayer.play();
+        }
+        if (mediaPlayer.getStatus() == Status.STOPPED) {
+            mediaPlayer.play();
+        }
+        if (mediaPlayer.getStatus() == Status.HALTED) {
+            mediaPlayer.play();
+        }
+    }//GEN-LAST:event_pauseButtonActionPerformed
+
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        
+
         //Play next time in List inTimes
         arrayPosition = arrayPosition + 1;
         Duration seekVal = Duration.millis(inTimes.get(arrayPosition));
@@ -318,13 +373,8 @@ public class NewJFrame extends javax.swing.JFrame {
         Duration seekVal = Duration.millis(inTimes.get(arrayPosition));
         mediaPlayer.seek(seekVal);
         mediaPlayer.play();
-        
-    }//GEN-LAST:event_prevButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //Stop playback
-        mediaPlayer.stop();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_prevButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -363,14 +413,15 @@ public class NewJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton back20Button;
     private javax.swing.JButton browseTimedButton;
     private javax.swing.JButton browseWavButton;
     private javax.swing.JLabel fileTimedLabel;
     private javax.swing.JLabel fileWavLabel;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton fwd20Button;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton nextButton;
+    private javax.swing.JButton pauseButton;
     private javax.swing.JButton prevButton;
     private javax.swing.JLabel selectTimedLabel;
     private javax.swing.JLabel selectWavLabel;
