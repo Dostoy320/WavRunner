@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 /*
@@ -63,7 +64,6 @@ public class NewJFrame extends javax.swing.JFrame {
         startTimeLabel = new javax.swing.JLabel();
         startTimeField = new javax.swing.JFormattedTextField();
         startTimeButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         pauseButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
         fwd20Button = new javax.swing.JButton();
@@ -78,10 +78,13 @@ public class NewJFrame extends javax.swing.JFrame {
         prerollSetButton = new javax.swing.JButton();
         prerollSetField = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        descTextArea = new javax.swing.JTextArea();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(590, 375));
-        setResizable(false);
+        setPreferredSize(new java.awt.Dimension(750, 375));
 
         browseWavButton.setText("Browse");
         browseWavButton.addActionListener(new java.awt.event.ActionListener() {
@@ -121,9 +124,6 @@ public class NewJFrame extends javax.swing.JFrame {
                 startTimeButtonActionPerformed(evt);
             }
         });
-
-        jLabel1.setFont(new java.awt.Font("Meiryo", 0, 24)); // NOI18N
-        jLabel1.setText("Description Seeker");
 
         pauseButton.setText("Play / Pause");
         pauseButton.addActionListener(new java.awt.event.ActionListener() {
@@ -186,6 +186,20 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Value:");
 
+        descTextArea.setEditable(false);
+        descTextArea.setColumns(20);
+        descTextArea.setLineWrap(true);
+        descTextArea.setRows(4);
+        descTextArea.setWrapStyleWord(true);
+        jScrollPane2.setViewportView(descTextArea);
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setText("Current Description Text:");
+
+        jLabel1.setFont(new java.awt.Font("Trebuchet MS", 0, 48)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("WavRunner");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -194,45 +208,44 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(selectWavLabel)
+                        .addGap(21, 21, 21)
+                        .addComponent(browseWavButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(fileWavLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(selectTimedLabel)
+                            .addComponent(startTimeLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(selectWavLabel)
-                                .addGap(21, 21, 21)
-                                .addComponent(browseWavButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(fileWavLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(selectTimedLabel)
-                                    .addComponent(startTimeLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(browseTimedButton)
-                                    .addComponent(startTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(startTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(startTimeButton)
                                     .addComponent(fileTimedLabel)))
+                            .addComponent(browseTimedButton)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(back20Button)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(prevButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(pauseButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(nextButton))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(descriptionLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(someDescLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(slashLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(totalDescLabel)))
+                                .addComponent(back20Button)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(prevButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(pauseButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nextButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(fwd20Button))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(descriptionLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(someDescLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(slashLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(totalDescLabel))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(prerollLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -243,52 +256,60 @@ public class NewJFrame extends javax.swing.JFrame {
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(prerollSetField)))
-                        .addContainerGap(107, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(24, 24, 24))))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(browseWavButton)
-                    .addComponent(selectWavLabel)
-                    .addComponent(fileWavLabel))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(selectTimedLabel)
-                    .addComponent(browseTimedButton)
-                    .addComponent(fileTimedLabel))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(startTimeLabel)
-                    .addComponent(startTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(startTimeButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(prerollLabel)
-                    .addComponent(prerollField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(prerollSetButton)
-                    .addComponent(prerollSetField)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(descriptionLabel)
-                    .addComponent(someDescLabel)
-                    .addComponent(slashLabel)
-                    .addComponent(totalDescLabel))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(pauseButton)
-                    .addComponent(back20Button)
-                    .addComponent(prevButton)
-                    .addComponent(fwd20Button)
-                    .addComponent(nextButton))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(browseWavButton)
+                            .addComponent(selectWavLabel)
+                            .addComponent(fileWavLabel))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(selectTimedLabel)
+                            .addComponent(browseTimedButton)
+                            .addComponent(fileTimedLabel))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(startTimeLabel)
+                            .addComponent(startTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(startTimeButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(prerollLabel)
+                            .addComponent(prerollField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(prerollSetButton)
+                            .addComponent(prerollSetField)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(descriptionLabel)
+                            .addComponent(someDescLabel)
+                            .addComponent(slashLabel)
+                            .addComponent(totalDescLabel))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(pauseButton)
+                            .addComponent(back20Button)
+                            .addComponent(prevButton)
+                            .addComponent(fwd20Button)
+                            .addComponent(nextButton)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(24, 24, 24))
         );
 
@@ -348,6 +369,7 @@ public class NewJFrame extends javax.swing.JFrame {
     
     Date startTime;
     List<Double> inTimes = new ArrayList<>();
+    List<String> descText = new ArrayList<>();
     int arrayPosition = 0;
     private void startTimeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTimeButtonActionPerformed
         //Parsing timecode strings to dates and calculating milliseconds
@@ -364,20 +386,46 @@ public class NewJFrame extends javax.swing.JFrame {
         String myLine = null;
         
         try {
+            // Comparing loopCycle and currentCycle determines what block of text
+            // the 'dumb' while loop is currently working through. 
+            int loopCycle = 0;
+            int currentCycle = 1;
+            // This StringBuilder object combines all the lines of text for a 
+            // given block.
+            StringBuilder currentDescText = new StringBuilder();
             while ((myLine = bufRead.readLine()) != null) {
                 if (myLine.isEmpty()) {
                     continue;
                 } else {
-                    String time = myLine.substring(1, 9);
-                    //Converting 29 frames/sec to milliseconds (somewhat roughly)
-                    int frames = Integer.parseInt(myLine.substring(9, 11));
-                    double millisFromFrames = frames * 34;
-                    Date myTime = sdf.parse("1970-01-01 " + time);
-                    //Added milliseconds computed from frames to total milliseconds parsed from timecode
-                    double resolvedTime = (myTime.getTime() + millisFromFrames) - startTime.getTime();
-                    inTimes.add(resolvedTime);
-                }
+                    // Is this line a timecode line?
+                    Pattern digPattern = Pattern.compile("\\d");
+                    // Is this line a description line?
+                    Pattern wordPattern = Pattern.compile(".*[a-zA-Z].*");
+                    if (digPattern.matcher(myLine.substring(1,2)).matches()) {
+                        String time = myLine.substring(1, 9);
+                        //Converting 29 frames/sec to milliseconds (somewhat roughly)
+                        int frames = Integer.parseInt(myLine.substring(9, 11));
+                        double millisFromFrames = frames * 34;
+                        Date myTime = sdf.parse("1970-01-01 " + time);
+                        //Added milliseconds computed from frames to total milliseconds parsed from timecode
+                        double resolvedTime = (myTime.getTime() + millisFromFrames) - startTime.getTime();
+                        inTimes.add(resolvedTime);
+                        loopCycle = loopCycle + 1;
+                    }
+                    if (wordPattern.matcher(myLine).matches()) {
+                        if (currentCycle == loopCycle) {
+                            currentDescText.append(myLine).append(" ");
+                        } else if (currentCycle != loopCycle) {
+                            descText.add(currentDescText.toString());
+                            currentDescText = new StringBuilder();
+                            currentDescText.append(myLine);
+                            currentCycle = currentCycle + 1;
+                        }
+                    }                     
+                 }
             }
+            // Add last description to list after reaching end of txt doc
+            descText.add(currentDescText.toString());
         } catch (IOException ex) {
             Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
@@ -404,6 +452,7 @@ public class NewJFrame extends javax.swing.JFrame {
         mediaPlayer.seek(seekVal);
         mediaPlayer.play();
         someDescLabel.setText(Integer.toString(arrayPosition + 1));
+        descTextArea.setText(descText.get(arrayPosition));
     }//GEN-LAST:event_fwd20ButtonActionPerformed
 
     private void back20ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back20ButtonActionPerformed
@@ -417,6 +466,7 @@ public class NewJFrame extends javax.swing.JFrame {
         mediaPlayer.seek(seekVal);
         mediaPlayer.play();
         someDescLabel.setText(Integer.toString(arrayPosition + 1));
+        descTextArea.setText(descText.get(arrayPosition));
     }//GEN-LAST:event_back20ButtonActionPerformed
 
     private void pauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseButtonActionPerformed
@@ -447,6 +497,7 @@ public class NewJFrame extends javax.swing.JFrame {
         mediaPlayer.seek(seekVal);
         mediaPlayer.play();
         someDescLabel.setText(Integer.toString(arrayPosition + 1));
+        descTextArea.setText(descText.get(arrayPosition));
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
@@ -458,7 +509,7 @@ public class NewJFrame extends javax.swing.JFrame {
         mediaPlayer.seek(seekVal);
         mediaPlayer.play();
         someDescLabel.setText(Integer.toString(arrayPosition + 1));
-
+        descTextArea.setText(descText.get(arrayPosition));
     }//GEN-LAST:event_prevButtonActionPerformed
     int preroll = 1000;
     private void prerollSetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prerollSetButtonActionPerformed
@@ -508,13 +559,16 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton back20Button;
     private javax.swing.JButton browseTimedButton;
     private javax.swing.JButton browseWavButton;
+    private javax.swing.JTextArea descTextArea;
     private javax.swing.JLabel descriptionLabel;
     private javax.swing.JLabel fileTimedLabel;
     private javax.swing.JLabel fileWavLabel;
     private javax.swing.JButton fwd20Button;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton nextButton;
     private javax.swing.JButton pauseButton;
     private javax.swing.JTextField prerollField;
