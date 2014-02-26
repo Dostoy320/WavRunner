@@ -1,4 +1,6 @@
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -80,8 +82,9 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         descTextArea = new javax.swing.JTextArea();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        currDescLabel = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
+        currTimeLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(750, 375));
@@ -193,12 +196,14 @@ public class NewJFrame extends javax.swing.JFrame {
         descTextArea.setWrapStyleWord(true);
         jScrollPane2.setViewportView(descTextArea);
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("Current Description Text:");
+        currDescLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        currDescLabel.setText("Current Description Text:");
 
-        jLabel1.setFont(new java.awt.Font("Trebuchet MS", 0, 48)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("WavRunner");
+        titleLabel.setFont(new java.awt.Font("Trebuchet MS", 0, 48)); // NOI18N
+        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        titleLabel.setText("WavRunner");
+
+        currTimeLabel.setText("jLabel4");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -227,17 +232,30 @@ public class NewJFrame extends javax.swing.JFrame {
                                     .addComponent(fileTimedLabel)))
                             .addComponent(browseTimedButton)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(back20Button)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(prevButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(pauseButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nextButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fwd20Button))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(back20Button)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(prevButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(pauseButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(nextButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(fwd20Button))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(prerollLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(prerollField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(prerollSetButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(prerollSetField)))
+                                .addGap(18, 18, 18))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(descriptionLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -245,22 +263,14 @@ public class NewJFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(slashLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(totalDescLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(prerollLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(prerollField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(prerollSetButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(prerollSetField)))
-                        .addGap(18, 18, 18)
+                                .addComponent(totalDescLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(currTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(currDescLabel)))
+                    .addComponent(titleLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -295,7 +305,8 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addComponent(descriptionLabel)
                             .addComponent(someDescLabel)
                             .addComponent(slashLabel)
-                            .addComponent(totalDescLabel))
+                            .addComponent(totalDescLabel)
+                            .addComponent(currTimeLabel))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(pauseButton)
@@ -305,9 +316,9 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addComponent(nextButton)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(23, 23, 23)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
+                        .addComponent(currDescLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(24, 24, 24))
@@ -318,6 +329,13 @@ public class NewJFrame extends javax.swing.JFrame {
     
     public void hideButton() {
         startTimeButton.setVisible(false);
+    }
+    
+    class TimeListener implements PropertyChangeListener {
+        public void propertyChange(PropertyChangeEvent e) {
+            Object source = e.getSource();
+            currDescLabel.setText(source.toString());
+        }
     }
     
     // wavPath available to browse and play buttons
@@ -340,7 +358,10 @@ public class NewJFrame extends javax.swing.JFrame {
         JFXPanel forToolkit = new JFXPanel();
         hit = new Media(wavPath);
         mediaPlayer = new MediaPlayer(hit);
+        mediaPlayer.addPropertyChangeListener("currentTime", new TimeListener());
     }//GEN-LAST:event_browseWavButtonActionPerformed
+
+    
     
     String textPath;
     BufferedReader bufRead;
@@ -498,6 +519,7 @@ public class NewJFrame extends javax.swing.JFrame {
         mediaPlayer.play();
         someDescLabel.setText(Integer.toString(arrayPosition + 1));
         descTextArea.setText(descText.get(arrayPosition));
+        currTimeLabel.setText(mediaPlayer.getCurrentTime().toString());
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
@@ -559,14 +581,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton back20Button;
     private javax.swing.JButton browseTimedButton;
     private javax.swing.JButton browseWavButton;
+    private javax.swing.JLabel currDescLabel;
+    private javax.swing.JLabel currTimeLabel;
     private javax.swing.JTextArea descTextArea;
     private javax.swing.JLabel descriptionLabel;
     private javax.swing.JLabel fileTimedLabel;
     private javax.swing.JLabel fileWavLabel;
     private javax.swing.JButton fwd20Button;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton nextButton;
@@ -583,6 +605,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton startTimeButton;
     private javax.swing.JFormattedTextField startTimeField;
     private javax.swing.JLabel startTimeLabel;
+    private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel totalDescLabel;
     // End of variables declaration//GEN-END:variables
 }
