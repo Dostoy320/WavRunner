@@ -1,6 +1,4 @@
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,16 +14,20 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
-//import javax.swing.JOptionPane;
 import javafx.util.*;
-//import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import static javafx.scene.media.MediaPlayer.Status.READY;
+import static javafx.scene.media.MediaPlayer.Status.UNKNOWN;
 import javax.swing.JOptionPane;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -85,9 +87,12 @@ public class NewJFrame extends javax.swing.JFrame {
         currDescLabel = new javax.swing.JLabel();
         titleLabel = new javax.swing.JLabel();
         currTimeLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        totalTimeLabel = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(750, 375));
+        setTitle("WavRunner");
 
         browseWavButton.setText("Browse");
         browseWavButton.addActionListener(new java.awt.event.ActionListener() {
@@ -203,7 +208,17 @@ public class NewJFrame extends javax.swing.JFrame {
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         titleLabel.setText("WavRunner");
 
-        currTimeLabel.setText("jLabel4");
+        currTimeLabel.setText("00:00:00");
+
+        jLabel1.setText("/");
+
+        totalTimeLabel.setText("00:00:00");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("v1.0 ");
+        jLabel3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel3.setAlignmentY(0.0F);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -232,46 +247,53 @@ public class NewJFrame extends javax.swing.JFrame {
                                     .addComponent(fileTimedLabel)))
                             .addComponent(browseTimedButton)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(back20Button)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(prevButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(pauseButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nextButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(fwd20Button))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(back20Button)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(prevButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(pauseButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(nextButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(fwd20Button))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(prerollLabel)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(prerollField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(prerollSetButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel2)
+                                        .addComponent(prerollSetButton))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(descriptionLabel)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(prerollSetField)))
-                                .addGap(18, 18, 18))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(descriptionLabel)
+                                        .addComponent(someDescLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(slashLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(totalDescLabel)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(currTimeLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(someDescLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(slashLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(totalDescLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(currTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(37, 37, 37)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(totalTimeLabel))
+                                    .addComponent(prerollSetField))))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(currDescLabel)))
-                    .addComponent(titleLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                            .addComponent(currDescLabel))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,7 +328,9 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addComponent(someDescLabel)
                             .addComponent(slashLabel)
                             .addComponent(totalDescLabel)
-                            .addComponent(currTimeLabel))
+                            .addComponent(currTimeLabel)
+                            .addComponent(jLabel1)
+                            .addComponent(totalTimeLabel))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(pauseButton)
@@ -315,8 +339,10 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addComponent(fwd20Button)
                             .addComponent(nextButton)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(currDescLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -326,48 +352,76 @@ public class NewJFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     public void hideButton() {
         startTimeButton.setVisible(false);
     }
     
-    class TimeListener implements PropertyChangeListener {
-        public void propertyChange(PropertyChangeEvent e) {
-            Object source = e.getSource();
-            currDescLabel.setText(source.toString());
-        }
-    }
-    
     // wavPath available to browse and play buttons
-    String wavPath;
     Media hit;
     MediaPlayer mediaPlayer;
+    String userhome = System.getProperty("user.home");
     private void browseWavButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseWavButtonActionPerformed
-        //Create a file chooser
-        final JFileChooser fc = new JFileChooser();
+        //Create a file chooser with Desktop as default path
+        final JFileChooser fc = new JFileChooser(userhome + "\\Desktop");
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
             "WAV file", "wav");
         fc.setFileFilter(filter);
         int returnVal = fc.showOpenDialog(null);
         File wavFile = fc.getSelectedFile();
         URI path = wavFile.toURI();
-        wavPath = path.toString();
+        String wavPath = path.toString();
         String fileName = fc.getName(wavFile);
         fileWavLabel.setText(fileName);
         //Initialize MediaPlayer instance
         JFXPanel forToolkit = new JFXPanel();
         hit = new Media(wavPath);
         mediaPlayer = new MediaPlayer(hit);
-        mediaPlayer.addPropertyChangeListener("currentTime", new TimeListener());
+        
+        mediaPlayer.currentTimeProperty().addListener(new TimeListener());
+       // mediaPlayer.stopTimeProperty().addListener(new TotalTimeListener());
+        
+      
+        
+        mediaPlayer.statusProperty().addListener(new ChangeListener<Enum>() {
+            @Override public void changed(ObservableValue<? extends Enum> o, Enum oldVal, Enum newVal) {
+                //Wait for player to initialize:
+                while (newVal == UNKNOWN) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                long totalDuration = ((long)mediaPlayer.getTotalDuration().toMillis());
+                totalTimeLabel.setText(String.format("%d:%d:%02d",
+                    TimeUnit.MILLISECONDS.toMinutes(totalDuration),
+                    TimeUnit.MILLISECONDS.toSeconds(totalDuration) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(totalDuration)),
+                    (TimeUnit.MILLISECONDS.toMillis(totalDuration) - 
+                            TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(totalDuration)))/10));
+            }
+        });       
     }//GEN-LAST:event_browseWavButtonActionPerformed
 
-    
+    public class TimeListener implements ChangeListener<Duration> {
+        @Override public void changed(ObservableValue<? extends Duration> o, Duration oldVal, Duration newVal) {
+            // Track current playback time:
+            long millis = ((long) newVal.toMillis());
+            currTimeLabel.setText(String.format("%d:%d:%02d",
+                    TimeUnit.MILLISECONDS.toMinutes(millis),
+                    TimeUnit.MILLISECONDS.toSeconds(millis) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)),
+                    (TimeUnit.MILLISECONDS.toMillis(millis) - 
+                            TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(millis )))/10));
+        }
+    }
     
     String textPath;
     BufferedReader bufRead;
     private void browseTimedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseTimedButtonActionPerformed
         //Create a file chooser
-        final JFileChooser fc = new JFileChooser();
+        final JFileChooser fc = new JFileChooser(userhome + "\\Desktop");
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
             "TEXT file", "txt");
         fc.setFileFilter(filter);
@@ -419,10 +473,10 @@ public class NewJFrame extends javax.swing.JFrame {
                     continue;
                 } else {
                     // Is this line a timecode line?
-                    Pattern digPattern = Pattern.compile("\\d");
+                    Pattern digPattern = Pattern.compile("\\d\\d:");
                     // Is this line a description line?
                     Pattern wordPattern = Pattern.compile(".*[a-zA-Z].*");
-                    if (digPattern.matcher(myLine.substring(1,2)).matches()) {
+                    if (digPattern.matcher(myLine.substring(0,3)).matches()) {
                         String time = myLine.substring(1, 9);
                         //Converting 29 frames/sec to milliseconds (somewhat roughly)
                         int frames = Integer.parseInt(myLine.substring(9, 11));
@@ -588,7 +642,9 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel fileTimedLabel;
     private javax.swing.JLabel fileWavLabel;
     private javax.swing.JButton fwd20Button;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton nextButton;
@@ -607,5 +663,6 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel startTimeLabel;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel totalDescLabel;
+    private javax.swing.JLabel totalTimeLabel;
     // End of variables declaration//GEN-END:variables
 }
