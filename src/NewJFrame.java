@@ -447,6 +447,9 @@ public class NewJFrame extends javax.swing.JFrame {
     List<String> descText = new ArrayList<>();
     int arrayPosition = 0;
     private void startTimeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTimeButtonActionPerformed
+        // Clear arrays to avoid overlap with previous file   
+        inTimes.clear();
+        descText.clear();        
         //Parsing timecode strings to dates and calculating milliseconds
         //http://stackoverflow.com/questions/8826270/how-to-convert-hhmmss-sss-to-milliseconds
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -493,7 +496,7 @@ public class NewJFrame extends javax.swing.JFrame {
                         } else if (currentCycle != loopCycle) {
                             descText.add(currentDescText.toString());
                             currentDescText = new StringBuilder();
-                            currentDescText.append(myLine);
+                            currentDescText.append(myLine).append(" ");
                             currentCycle = currentCycle + 1;
                         }
                     }                     
